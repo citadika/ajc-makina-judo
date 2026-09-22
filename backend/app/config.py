@@ -6,11 +6,15 @@ Equivalent Python de application.properties côté backend Java.
 """
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy.engine import URL
 
 
 class Settings(BaseSettings):
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore"
+    )
 
     # -------------------------------------------------------
     # POSTGRESQL
@@ -22,10 +26,20 @@ class Settings(BaseSettings):
     db_password: str = "admin1"
 
     @property
-    def database_url(self) -> str:
-        return (
-            f"postgresql+psycopg2://{self.db_username}:{self.db_password}"
-            f"@{self.db_host}:{self.db_port}/{self.db_name}"
+    def database_url(self):
+        """
+        Construit l'URL SQLAlchemy de manière sécurisée.
+
+        URL.create() permet notamment de gérer correctement les
+        caractères spéciaux présents dans le mot de passe.
+        """
+        return URL.create(
+            drivername="postgresql+psycopg2",
+            username=self.db_username,
+            password=self.db_password,
+            host=self.db_host,
+            port=self.db_port,
+            database=self.db_name,
         )
 
     # -------------------------------------------------------
@@ -40,7 +54,7 @@ class Settings(BaseSettings):
     # Valeur par défaut fournie pour le développement uniquement.
     # En production, définir OBLIGATOIREMENT la variable
     # d'environnement JWT_SECRET avec une valeur longue et
-    # aléatoire (ex: openssl rand -base64 48).
+    # aléatoire.
     jwt_secret: str = (
         "JudoCardSystemSecretKey2026VerySecureKeyForJWT123456789"
     )
@@ -70,3 +84,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
+
