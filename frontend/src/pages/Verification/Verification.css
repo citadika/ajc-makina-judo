@@ -1,0 +1,82 @@
+.screen-verif {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 640px;
+}
+
+.verif-search {
+  display: flex;
+  gap: 10px;
+}
+.verif-search .search-box {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.86rem;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+.verif-result {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.verif-result.found {
+  background: var(--tatami-green-pale);
+  border: 1px solid var(--tatami-green);
+}
+.verif-result.not-found {
+  background: var(--danger-pale);
+  border: 1px solid var(--danger);
+}
+.verif-result .avatar { width: 42px; height: 42px; font-size: 1.1rem; }
+.verif-id { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+.verif-id b { font-size: 1rem; }
+.verif-id span { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-soft); }
+
+.verif-log {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.verif-log-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.verif-log h5 {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0;
+  font-weight: 500;
+}
+.verif-log-head .btn-ghost {
+  font-size: 0.7rem;
+  padding: 4px 10px;
+}
+.verif-log-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.84rem;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.verif-log-row:last-child { border-bottom: none; }
+.verif-log-row .when { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+.verif-log-row .by { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); font-weight: 400; }

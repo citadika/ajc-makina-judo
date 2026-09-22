@@ -1,0 +1,337 @@
+AJC MAKINA JUDO — JudoCard (backend Python / frontend React)
+================================================================
+
+Reconstruction complète de l'application JudoCard existante (qui
+tournait en Spring Boot + Angular), en gardant exactement la même
+maquette / le même visuel, avec :
+
+  - Backend  : Python (FastAPI) + PostgreSQL
+  - Frontend : React + TypeScript (Vite)
+
+Toutes les fonctionnalités de la version précédente ont été
+reproduites à l'identique : connexion, gestion des adhérents (avec
+photo), cartes de membre avec QR code, historique des ceintures,
+vérification de carte, gestion des utilisateurs (admin), paramètres
+du club (avec logo). Testé de bout en bout (backend + frontend +
+base de données réelle) avant livraison — voir plus bas.
+
+STRUCTURE DU DOSSIER
+---------------------
+AJC Makina judo/
+├── backend/     (API Python FastAPI)
+└── frontend/    (application React + TypeScript)
+
+============================================================
+1) INSTALLATION DU BACKEND (Python)
+============================================================
+
+Prérequis : Python 3.11+ et PostgreSQL déjà installés sur votre
+machine (vous avez déjà pgAdmin, donc PostgreSQL est présent).
+
+1. Créez une base de données PostgreSQL vide, par exemple nommée
+   "ajc_makina_judo" (via pgAdmin, ou en ligne de commande :
+   `createdb ajc_makina_judo`). Vous n'avez RIEN d'autre à créer :
+   les tables sont créées automatiquement au premier démarrage du
+   serveur.
+
+2. Ouvrez un terminal dans le dossier "backend" :
+
+     cd "AJC Makina judo\backend"
+
+3. Créez un environnement virtuel Python et installez les
+   dépendances :
+
+     python -m venv venv
+     venv\Scripts\activate          (Windows)
+     pip install -r requirements.txt
+
+4. Copiez le fichier .env.example en .env, et ajustez si besoin le
+   nom d'utilisateur / mot de passe PostgreSQL (par défaut :
+   postgres / admin1, port 5432) :
+
+     copy .env.example .env
+
+   Éditez .env avec le Bloc-notes si votre PostgreSQL utilise un
+   autre utilisateur/mot de passe.
+
+5. Démarrez le serveur :
+
+     uvicorn app.main:app --reload --port 8000
+
+   Au premier démarrage, vous verrez dans les logs :
+   "Compte ADMIN par défaut créé (username=admin, ...)".
+
+   Identifiants de connexion par défaut :
+     Nom d'utilisateur : admin
+     Mot de passe       : Admin@123
+   (Pensez à le changer une fois connecté, via l'écran Utilisateurs.)
+
+   La documentation interactive de l'API est disponible sur
+   http://localhost:8000/docs pendant que le serveur tourne.
+
+============================================================
+2) INSTALLATION DU FRONTEND (React)
+============================================================
+
+Prérequis : Node.js (déjà installé chez vous, utilisé pour le
+frontend Angular précédent).
+
+1. Ouvrez un AUTRE terminal dans le dossier "frontend" (le backend
+   doit rester lancé dans son propre terminal) :
+
+     cd "AJC Makina judo\frontend"
+
+2. Installez les dépendances :
+
+     npm install
+
+3. Démarrez le serveur de développement :
+
+     npm run dev
+
+4. Ouvrez http://localhost:5173 dans votre navigateur.
+
+Le frontend (port 5173) relaie automatiquement ses appels vers le
+backend (port 8000) via le proxy Vite déjà configuré
+(vite.config.ts) — aucune configuration supplémentaire nécessaire,
+et aucun problème de connexion entre ports comme cela avait pu
+arriver avec la version Angular avant sa correction.
+
+============================================================
+VÉRIFICATIONS EFFECTUÉES AVANT LIVRAISON
+============================================================
+
+L'application complète (backend + frontend + une vraie base
+PostgreSQL locale) a été testée bout en bout avant livraison :
+connexion, création d'adhérent (avec doublon téléphone/email
+correctement rejeté en 409), upload de photo, création de carte
+avec génération de QR code, vérification de carte (trouvée et non
+trouvée), promotion de ceinture avec historique, paramètres du
+club, gestion des utilisateurs (création, contrôle d'accès
+administrateur), et rendu visuel réel de l'interface (connexion,
+tableau de bord, liste des adhérents, carte recto/verso avec liseré
+tricolore) — tout fonctionne correctement.
+
+============================================================
+DIFFÉRENCES / SIMPLIFICATIONS VOLONTAIRES PAR RAPPORT À LA VERSION ANGULAR
+============================================================
+
+- Les tables de la base de données sont créées automatiquement au
+  démarrage (comme `ddl-auto=update` côté Spring Boot), ET les
+  colonnes ajoutées lors des mises à jour ultérieures sont elles
+  aussi rattrapées automatiquement (voir "MISES À JOUR RÉCENTES"
+  ci-dessous) — vous n'avez jamais besoin d'exécuter vous-même une
+  commande SQL. Pour un usage en production durable à long terme,
+  envisager malgré tout un outil de migration comme Alembic.
+- Le port du backend est 8000 (au lieu de 8080 pour la version
+  Java) et celui du frontend est 5173 (au lieu de 4200 pour la
+  version Angular), pour éviter tout conflit si vous gardez les
+  deux versions installées en parallèle sur la même machine.
+
+============================================================
+MISES À JOUR RÉCENTES (17/09/2026)
+============================================================
+
+- Adresse de l'adhérent : le formulaire "Nouvel adhérent" /
+  "Modifier l'adhérent" propose maintenant 4 champs distincts
+  (Commune, Quartier, Avenue, Numéro) au lieu d'un simple champ de
+  texte libre. Une adresse lisible est composée automatiquement à
+  partir de ces 4 champs pour l'affichage (fiche adhérent, carte de
+  membre, contenu du QR code).
+- Photo de profil : après avoir choisi un fichier, une fenêtre de
+  recadrage s'ouvre automatiquement (glisser pour repositionner,
+  curseur pour zoomer). Un bouton "Zoomer / recadrer" permet de
+  rouvrir cette fenêtre à tout moment avant l'enregistrement, y
+  compris pour une photo déjà enregistrée. Ceci remplace la
+  simplification mentionnée dans les versions précédentes de ce
+  fichier.
+- Bouton "← Retour" : présent en haut de toutes les pages (sauf le
+  tableau de bord) pour revenir facilement à l'écran précédent.
+- Logo du club (onglet Paramètres) : s'affiche maintenant réellement
+  sur le recto et le verso de la carte de membre, à la place du
+  simple texte "Logo".
+- Carte de membre : affichée en plus grand format, avec une adresse
+  qui peut désormais s'étaler sur 2 lignes sans être coupée.
+- Écran Vérification : la recherche se lance automatiquement dès que
+  vous arrêtez de taper (plus besoin de cliquer sur "Vérifier" ni
+  d'appuyer sur Entrée), et un bouton "Vider" permet d'effacer
+  l'historique des dernières vérifications.
+- Fiabilité des mises à jour futures : au démarrage, le serveur
+  rattrape désormais automatiquement toute colonne manquante sur une
+  base de données déjà existante (voir app/migrations.py). C'est ce
+  qui causait l'erreur "Problème temporaire de connexion à la base
+  de données" rencontrée après l'ajout du champ "sexe" — ce problème
+  ne devrait plus se reproduire lors des prochaines mises à jour.
+
+============================================================
+MISE À JOUR (17/09/2026, suite)
+============================================================
+
+- Historique des ceintures (passage de grade) : le champ
+  "Examinateur" n'est plus figé sur le nom de l'utilisateur connecté.
+  Il est préempli avec ce nom par défaut, mais peut être remplacé par
+  le nom de la personne ayant réellement fait passer l'examen. Ce nom
+  est enregistré avec chaque passage, affiché dans la liste de
+  l'historique, et peut être corrigé après coup (comme la date) en
+  cliquant sur une ligne de l'historique puis "Modifier".
+
+============================================================
+MISE À JOUR (17/09/2026, suite) — traçabilité des actions
+============================================================
+
+- L'application garde maintenant une trace de "qui a fait quoi"
+  (nom du compte connecté) pour les actions principales :
+    - Création / modification d'un adhérent.
+    - Création d'une carte de membre.
+    - Modification des paramètres du club.
+    - Vérification d'une carte.
+- Cette information est affichée à deux endroits :
+    - Directement sur chaque fiche concernée ("Créé par" / "Dernière
+      modification par" sur la fiche adhérent, "Carte créée par" sur
+      la carte, "Dernière modification par" sur les Paramètres,
+      "vérifié par" dans l'historique de l'écran Vérification).
+    - Un nouvel écran "Journal d'activité" (lien dans la barre
+      latérale), qui liste dans l'ordre chronologique toutes les
+      actions récentes avec le nom du compte concerné.
+
+============================================================
+MISE À JOUR (17/09/2026, suite) — examinateur "Ajouter" + autorisations
+============================================================
+
+- Historique des ceintures : à côté du champ "Examinateur", un
+  bouton "+ Ajouter" permet d'enregistrer un nom d'examinateur dans
+  une liste réutilisable, sans avoir à enregistrer tout un passage
+  de ceinture. Une fois ajouté, ce nom est proposé automatiquement
+  (auto-complétion) la prochaine fois que vous tapez dans ce champ,
+  pour tous les adhérents. Cliquer sur "Ajouter" avec un nom déjà
+  connu (même écrit avec une casse différente) ne crée pas de
+  doublon.
+- Comptes utilisateurs : lorsqu'un administrateur crée ou modifie un
+  compte "Secrétariat", il peut désormais cocher précisément les
+  actions que ce compte est autorisé à effectuer :
+    - Adhérents — créer / modifier.
+    - Cartes — créer.
+    - Historique de ceinture — passages, examinateurs.
+    - Vérification de carte.
+  Un compte Administrateur garde toujours accès à tout, quelles que
+  soient les cases cochées. Un compte Secrétariat sans autorisation
+  cochée pour une action donnée : le bouton/lien correspondant est
+  masqué dans l'application, et l'action est de toute façon refusée
+  par le serveur si elle est tentée directement. La consultation des
+  données (listes, fiches, historiques) reste ouverte à tout compte
+  connecté — seules les actions de création/modification sont
+  concernées par ces autorisations.
+- Les autorisations accordées à chaque compte sont visibles dans le
+  tableau de l'écran "Utilisateurs" (colonne "Autorisations").
+
+============================================================
+MISE À JOUR (17/09/2026, suite) — jusqu'à 3 examinateurs par passage
+============================================================
+
+- Historique des ceintures : le formulaire de passage (et la modale
+  de correction d'un passage déjà enregistré) proposent désormais
+  jusqu'à 3 champs "Examinateur", chacun avec sa propre
+  auto-complétion et son propre bouton "+ Ajouter". Seul le premier
+  est nécessaire ; les deux autres sont facultatifs.
+- Un passage enregistré avec plusieurs examinateurs les affiche tous
+  dans la liste de l'historique ("Examinateurs : Nom 1, Nom 2, Nom
+  3"), et un seul examinateur reste affiché normalement ("Examinateur
+  : Nom") — aucun changement pour les passages déjà enregistrés
+  auparavant avec un seul examinateur.
+- Tout nom saisi dans l'un de ces 3 champs, même sans cliquer sur
+  "Ajouter", alimente désormais aussi la liste réutilisable
+  d'examinateurs (auto-complétion proposée ensuite pour tous les
+  adhérents) — le bouton "+ Ajouter" reste utile pour enregistrer un
+  nom sans avoir à enregistrer tout un passage.
+
+============================================================
+MISE À JOUR (17/09/2026, suite) — grade des examinateurs
+============================================================
+
+- Historique des ceintures : à côté de chaque champ "Examinateur" (les
+  3 emplacements), un champ "Grade" facultatif (ex. "4e Dan") permet
+  d'enregistrer le grade de la personne en même temps que son nom, en
+  cliquant sur "+ Ajouter". Ce grade est ensuite affiché
+  automatiquement à côté du nom partout où l'examinateur apparaît
+  ("Maître Kabongo (4e Dan)") - dans la liste de l'historique, la
+  modale de détails, et pour tous les adhérents (le grade est une
+  information liée à la personne, pas à un passage en particulier).
+- Si vous retapez le nom d'un examinateur déjà connu, son grade déjà
+  enregistré est automatiquement proposé dans le champ "Grade"
+  (modifiable avant d'enregistrer, si besoin de le corriger).
+- Cliquer sur "+ Ajouter" avec un nom déjà connu et un nouveau grade
+  met à jour (corrige) le grade enregistré pour cette personne - sans
+  créer de doublon dans la liste réutilisable, et sans modifier les
+  passages déjà enregistrés dans le passé (ils affichent désormais le
+  grade le plus à jour de l'examinateur, comme une fiche à jour plutôt
+  qu'une photo figée dans le temps).
+
+============================================================
+MISE À JOUR (17/09/2026, suite) — autorisations détaillées (lecture/
+ajout/modification/suppression) + accès au journal d'audit
+============================================================
+
+- Jusqu'ici, les autorisations d'un compte "Secrétariat" ne
+  couvraient que les actions d'écriture (créer/modifier), et la
+  LECTURE (listes, fiches, historiques, journal d'activité) restait
+  ouverte à tout compte connecté sans aucune case à cocher. Ce n'est
+  plus le cas : chaque rubrique distingue désormais séparément la
+  lecture, l'ajout, la modification et la suppression, et la lecture
+  elle-même doit être explicitement cochée pour qu'un compte
+  Secrétariat puisse consulter la rubrique correspondante.
+- Écran "Utilisateurs" : la case à cocher unique par rubrique est
+  remplacée par une grille (une ligne par rubrique, une case par
+  action réellement possible) :
+    - Adhérents — Lecture / Ajout / Modification / Suppression.
+    - Cartes — Lecture / Ajout / Modification.
+    - Historique de ceinture — Lecture / Ajout / Modification.
+    - Vérification de carte — Lecture / Ajout / Suppression.
+    - Journal d'audit — Lecture.
+  (la suppression n'existe par exemple pas pour les cartes ni
+  l'historique de ceinture : il n'y a donc pas de case pour cette
+  action sur ces lignes.) Un compte Administrateur garde toujours
+  accès à tout, quelles que soient les cases cochées.
+- Nouveau : qui peut voir le journal d'audit ("Journal d'activité")
+  se contrôle désormais lui aussi, au même titre que les autres
+  rubriques — auparavant, ce journal était visible par n'importe quel
+  compte connecté sans distinction. Un compte Secrétariat sans la
+  case "Journal d'audit — Lecture" ne voit plus le lien dans le menu
+  et n'y a plus accès.
+- Chaque action non cochée reste masquée dans l'application (bouton,
+  lien, ou page entière selon le cas) ET refusée par le serveur si
+  elle est tentée directement — comme pour les autorisations
+  existantes.
+- Comptes déjà existants avant cette mise à jour : aucune perte
+  d'accès. Au premier démarrage du serveur après la mise à jour, tous
+  les comptes déjà créés reçoivent automatiquement la lecture sur
+  toutes les rubriques (y compris le journal d'audit, qui leur était
+  déjà accessible), ainsi que leurs anciennes autorisations d'écriture
+  traduites en ajout/modification/suppression complets sur la même
+  rubrique. Rien à faire de votre côté — c'est transparent et ne
+  s'applique qu'une seule fois par compte.
+
+============================================================
+CORRECTION (17/09/2026, suite) — numéro affiché au verso de la carte
+============================================================
+
+- Verso de la carte de membre : le numéro affiché à côté de
+  "ajcmakina.cd" est désormais celui du CLUB (renseigné dans
+  Paramètres) au lieu du numéro personnel de l'adhérent. Auparavant,
+  la carte affichait par erreur le téléphone de l'adhérent lui-même à
+  cet endroit, alors que ce numéro sert à contacter le club en cas de
+  carte perdue.
+- Pensez à renseigner le numéro de téléphone du club dans l'écran
+  "Paramètres" si ce n'est pas déjà fait, sinon cet emplacement reste
+  vide ("—") sur les cartes.
+- Le recto (numéro de carte/matricule propre à chaque adhérent) n'est
+  pas concerné par ce changement.
+
+============================================================
+NE PAS OUBLIER
+============================================================
+
+- Changez le mot de passe du compte "admin" par défaut après votre
+  première connexion.
+- En production, remplacez la valeur JWT_SECRET dans .env par une
+  chaîne longue et aléatoire, et ne committez jamais ce fichier
+  .env dans un dépôt Git public.

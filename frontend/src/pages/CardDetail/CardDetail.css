@@ -1,0 +1,74 @@
+.screen-card-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  align-items: center;
+  text-align: center;
+}
+.screen-card-detail > .table-link {
+  align-self: flex-start;
+}
+
+.no-card-panel {
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  max-width: 420px;
+}
+
+.card-faces {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.card-face-label {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card-created-by {
+  margin: -4px 0 0;
+  font-size: 0.72rem;
+  text-align: center;
+}
+
+.qr-contents {
+  max-width: 420px;
+  text-align: left;
+  width: 100%;
+}
+.qr-contents ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.qr-contents li {
+  font-size: 0.84rem;
+  color: var(--ink-soft);
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.qr-contents li::before {
+  content: "";
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  transform: translateY(-2px);
+}

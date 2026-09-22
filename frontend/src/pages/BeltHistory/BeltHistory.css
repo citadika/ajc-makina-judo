@@ -1,0 +1,164 @@
+.screen-history {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.history-member {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.history-member .avatar { width: 46px; height: 46px; font-size: 1.1rem; }
+.history-member .who { display: flex; flex-direction: column; gap: 2px; }
+.history-member .who b { font-family: var(--font-display); font-size: 1.5rem; line-height: 1; }
+.history-member .who span { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); }
+
+.history-matricule {
+  margin-left: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+.history-matricule .num { font-size: 0.86rem; color: var(--ink); font-variant-numeric: tabular-nums; }
+.history-matricule .lock {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tatami-green);
+}
+
+.history-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: var(--paper-sunken);
+  border-radius: 10px;
+  padding: 16px;
+}
+.history-form .field { flex: 1; min-width: 140px; }
+.history-form .field input[readonly] { background: var(--paper-raised); color: var(--ink-soft); }
+/* .history-form est un flex container (pas un .form-grid) : sans ceci,
+   .field.full-width (examinateurs, observation) ne prend pas toute la
+   largeur et se retrouve écrasé comme une simple colonne parmi
+   d'autres. flex-basis: 100% force un retour à la ligne complet. */
+.history-form .field.full-width { flex-basis: 100%; }
+
+.examiners-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+@media (max-width: 720px) {
+  .examiners-grid { grid-template-columns: 1fr; }
+}
+/* La modale "Détails du passage" (.modal, voir global.css) fait au
+   plus 640px de large quelle que soit la largeur de l'écran : la
+   requête média ci-dessus (basée sur la largeur de la FENÊTRE, pas de
+   la modale) ne se déclenche donc jamais sur un grand écran, alors
+   que 3 colonnes (champ + bouton "+ Ajouter" + champ grade) n'y
+   tiennent pas - le 3e examinateur débordait alors hors de la boîte
+   blanche de la modale, invisible car confondu avec le fond assombri
+   derrière elle. On force ici un empilement systématique dans la
+   modale, indépendamment de la largeur de la fenêtre. */
+.modal .examiners-grid {
+  grid-template-columns: 1fr;
+}
+.examiner-field { display: flex; flex-direction: column; gap: 4px; }
+.examiner-input-row { display: flex; gap: 6px; align-items: center; }
+.examiner-input-row input { flex: 1; min-width: 0; }
+.btn-add-examiner {
+  flex-shrink: 0;
+  padding: 8px 10px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+.examiner-grade-input {
+  font-size: 0.78rem;
+  padding: 6px 8px;
+}
+.examiner-error {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.72rem;
+  color: var(--danger);
+}
+
+.history-timeline {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 6px 18px;
+  display: flex;
+  flex-direction: column;
+}
+.history-row {
+  display: grid;
+  grid-template-columns: 12px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.history-row:last-child { border-bottom: none; }
+.history-row .dot { width: 10px; height: 10px; border-radius: 3px; }
+.history-row .change { display: flex; flex-direction: column; gap: 2px; }
+.history-row .change b { font-size: 0.9rem; font-weight: 600; }
+.history-row .change span { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); }
+.history-row .when {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.history-row.clickable { cursor: pointer; border-radius: 8px; padding-left: 6px; padding-right: 6px; }
+.history-row.clickable:hover { background: var(--paper-sunken); }
+
+/* =====================================================================
+   MODALE "DÉTAILS DU PASSAGE" — mêmes classes que la modale de
+   visualisation d'un adhérent (Members.css), redéfinies ici pour que
+   cette page reste autonome quelle que soit la feuille de style déjà
+   chargée par le navigateur.
+   ===================================================================== */
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+@media (max-width: 480px) {
+  .details-grid { grid-template-columns: 1fr; }
+}
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  background: var(--paper-sunken);
+  border-radius: 8px;
+}
+.detail-item.full-width { grid-column: 1 / -1; }
+.detail-item > span {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+.detail-item strong { font-size: 0.86rem; font-weight: 600; }
+.detail-item input[type='date'],
+.detail-item input[type='text'] {
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+}

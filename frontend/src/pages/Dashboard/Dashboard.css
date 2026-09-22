@@ -1,0 +1,102 @@
+.screen-dash {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.dash-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.dash-head h4 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+}
+.dash-head span {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-faint);
+}
+
+.dash-split {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+}
+@media (max-width: 860px) {
+  .dash-split { grid-template-columns: 1fr; }
+}
+
+.belt-chart, .recent {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.belt-chart h5, .recent h5 {
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 4px;
+  font-weight: 500;
+}
+
+.belt-row {
+  display: grid;
+  grid-template-columns: 64px 1fr 28px;
+  align-items: center;
+  gap: 10px;
+}
+.belt-row .name { font-size: 0.78rem; color: var(--ink-soft); }
+.belt-row .track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--paper-sunken);
+  overflow: hidden;
+}
+.belt-row .fill { height: 100%; border-radius: 4px; }
+.belt-row .count {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  text-align: right;
+  color: var(--ink-soft);
+  font-variant-numeric: tabular-nums;
+}
+
+.recent-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: inherit;
+  padding: 4px 0;
+  border-radius: 8px;
+}
+.recent-row:hover { background: var(--paper-sunken); }
+.recent-row .who { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.recent-row .who b {
+  font-size: 0.88rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recent-row .who span {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-faint);
+}
+
+.dash-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}

@@ -1,0 +1,50 @@
+.screen-activity-log {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.activity-list {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 6px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.activity-row {
+  display: grid;
+  grid-template-columns: 26px 1fr auto;
+  gap: 14px;
+  align-items: center;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.activity-row:last-child { border-bottom: none; }
+
+.activity-icon {
+  font-size: 1.05rem;
+  text-align: center;
+}
+
+.activity-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.activity-main p {
+  margin: 0;
+  font-size: 0.88rem;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+.activity-user {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ink-faint);
+}
+
+.activity-when {
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+  text-align: right;
+  white-space: nowrap;
+}

@@ -1,0 +1,35 @@
+.screen-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Même apparence que la barre d'outils de la page Adhérents
+   (Members.css) - redéfinie ici pour que cette page reste autonome
+   même si Members.css n'a pas encore été chargé par le navigateur. */
+.screen-cards .members-tools {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.screen-cards .search-box {
+  flex: 1;
+  min-width: 200px;
+  font-family: var(--font-body);
+  font-size: 0.86rem;
+  padding: 9px 13px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+.screen-cards .status-filter {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--paper-raised);
+  color: var(--ink-soft);
+}

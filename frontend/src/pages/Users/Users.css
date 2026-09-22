@@ -1,0 +1,78 @@
+.screen-users {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.users-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.perm-badge-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.perm-badge {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.02em;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--paper-sunken);
+  color: var(--ink-soft);
+  white-space: nowrap;
+  display: inline-block;
+}
+.perm-badge.perm-all { background: var(--tatami-blue-pale); color: var(--tatami-blue-deep); }
+
+.perm-note { font-size: 0.78rem; margin: 2px 0 8px; }
+
+.perm-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: var(--paper-sunken);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.perm-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.84rem;
+  cursor: pointer;
+}
+.perm-checkbox input[type='checkbox'] { width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; }
+
+/* Grille ressource × action (lecture/ajout/modification/suppression)
+   de l'écran Utilisateurs - une ligne par ressource, une case à
+   cocher par action réellement exposée par son API. */
+.perm-matrix {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--paper-sunken);
+  border-radius: 8px;
+  padding: 6px 12px;
+}
+.perm-matrix-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--hairline, rgba(0, 0, 0, 0.08));
+}
+.perm-matrix-row:last-child { border-bottom: none; }
+.perm-matrix-resource {
+  font-size: 0.84rem;
+  font-weight: 600;
+  min-width: 170px;
+}
+.perm-matrix-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 16px;
+}

@@ -1,0 +1,51 @@
+.crop-modal { max-width: 380px; }
+
+.crop-body { align-items: center; }
+
+.crop-viewport {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: var(--paper-sunken);
+  touch-action: none;
+  cursor: grab;
+  flex-shrink: 0;
+}
+.crop-viewport:active { cursor: grabbing; }
+
+.crop-image {
+  position: absolute;
+  max-width: none;
+  user-select: none;
+  pointer-events: none;
+}
+
+.crop-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 2px var(--gold);
+  pointer-events: none;
+}
+
+.crop-zoom-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+.crop-zoom-row input[type='range'] {
+  flex: 1;
+  accent-color: var(--gold);
+}
+.crop-zoom-icon {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--ink-faint);
+  width: 14px;
+  text-align: center;
+  user-select: none;
+}
